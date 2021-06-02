@@ -12,7 +12,7 @@ def center_tree(n):
         new_tree.extend(range(1, count + 1))
     else:
         count = int(len(tree) / 2)
-        new_tree = [i for i in range(0, count + 1)]
+        new_tree = [i for i in range(0, count)]
         new_tree.extend(range(1, count + 1))
     return new_tree
 
@@ -28,11 +28,23 @@ def find_pq(tree):
         if tree[i] == lp - 1:
             return [p + 1, i + 1]
 
-def get_si(i, tree, vals):
-    if i < vals[0]:
-        return tree[i-1]
-    else:
-        return get_si(i - (vals[0] - vals[1]), tree, vals)
+def get_si(tree, vals):
+    # if i < vals[0]:
+    #     return tree[i-1]
+    # else:
+    #     return get_si(i - (vals[0] - vals[1]), tree, vals)
+    output = []
+
+    i = 1
+    while(i <= len(tree)):
+        if(i < vals[0]):
+            output.append(tree[i-1])
+        else:
+            output.append(output[i-(vals[0]-vals[1])-1])
+        
+        i += 1
+    
+    return output
 
 def comp_lex(tree1, tree2):
     tree1 = [str(i) for i in tree1]
@@ -89,37 +101,52 @@ def l_height(tree):
             val = tree[i]
     """
 
-def skip(tree, vals):
-    if tree.count(1) == 1:
-        return tree
+def skip(tree):
     ind_1 = tree.index(1)
     m = tree.index(1, ind_1 + 1)
     L1 = [tree[i] - 1 for i in range(1, m)]
     vals = find_pq(L1)
-    tree2 = [get_si(i+1, tree, vals) for i in range(n)]
+    print(vals)
+    tree2 = get_si(tree, vals)
     if tree[vals[0]] > 2:
         h = max(L1)
+        print(tree2)
         tree2 = tree2[:len(tree2) - (h + 1)]
-        tree2.extend(range(1, h + 1))
+        print(tree2)
+        tree2.extend(range(1, h + 2))
+    
+    print(tree2)
     return tree2
 
 if __name__ == '__main__':
 
-    n = 5
+    n = 6
     free = []
-    tree = center_tree(n) #don't add initial tree because there is no second 1
-    j = 0
-    while sum(tree) != len(tree) - 1 and j <= 5:
-        print(tree, free_check(tree, n))
+    tree = center_tree(n)
+    free.append(tree)
+
+    while sum(tree) != len(tree) - 1:
+        # print(tree, free_check(tree, n))
         vals = find_pq(tree)
-        tree = [get_si(i + 1, tree, vals) for i in range(n)]
-        if free_check(tree, n):
-            free.append(tree)
-        else:
-            tree = skip(tree, vals)
+        tree = get_si(tree, vals)
+        print(tree, free_check(tree, n))
+        # if free_check(tree, n):
+        #     free.append(tree)
+        # else:
+        #     tree = skip(tree, vals)
+        #     if free_check(tree, n):
+        #         free.append(tree)
+        while(free_check(tree, n) == False):
+            tree = skip(tree)
+        
+        free.append(tree)
+
+            
     print(tree, free_check(tree, n))
 
     print("fin", len(free))
+
+    print(free)
 
 """
 print(*tree, sep = " ")
