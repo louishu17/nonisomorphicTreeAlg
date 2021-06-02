@@ -8,13 +8,14 @@ def center_tree(n):
     tree = range(n)
     if len(tree) % 2 == 1:
         count = int((len(tree) - 1) / 2)
-        new_tree = [i for i in range(count, 0, -1)]
-        new_tree.extend(range(count + 1))
+        new_tree = [i for i in range(0, count + 1)]
+        new_tree.extend(range(1, count + 1))
     else:
         count = int(len(tree) / 2)
-        new_tree = [i for i in range(count, 0, -1)]
-        new_tree.extend(range(count))
+        new_tree = [i for i in range(0, count + 1)]
+        new_tree.extend(range(1, count + 1))
     return new_tree
+
 
 
 def find_pq(tree):
@@ -99,7 +100,7 @@ def skip(tree, vals):
     if tree[vals[0]] > 2:
         h = max(L1)
         tree2 = tree2[:len(tree2) - (h + 1)]
-        tree2.extend(range(1, h + 2))
+        tree2.extend(range(1, h + 1))
     return tree2
 
 if __name__ == '__main__':
