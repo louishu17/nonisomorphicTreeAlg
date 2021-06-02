@@ -4,6 +4,19 @@ Created on 6/2/21
 @author: fayfayning
 """
 
+def center_tree(n):
+    tree = range(n)
+    if len(tree) % 2 == 1:
+        count = int((len(tree) - 1) / 2)
+        new_tree = [i for i in range(count, 0, -1)]
+        new_tree.extend(range(count + 1))
+    else:
+        count = int(len(tree) / 2)
+        new_tree = [i for i in range(count, 0, -1)]
+        new_tree.extend(range(count))
+    return new_tree
+
+
 def find_pq(tree):
     for i in range(len(tree) - 1, -1, -1):
         if tree[i] != 1:
@@ -93,7 +106,7 @@ if __name__ == '__main__':
 
     n = 5
     free = []
-    tree = range(n) #don't add initial tree because there is no second 1
+    tree = center_tree(n) #don't add initial tree because there is no second 1
     j = 0
     while sum(tree) != len(tree) - 1 and j <= 5:
         print(tree, free_check(tree, n))
