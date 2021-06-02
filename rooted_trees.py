@@ -81,8 +81,8 @@ def skip(tree, vals):
     ind_1 = tree.index(1)
     m = tree.index(1, ind_1 + 1)
     L1 = [tree[i] - 1 for i in range(1, m)]
-    vals[0] = find_pq(L1)
-    tree2 = [get_si(i + 1, tree, vals) for i in range(n)]
+    vals = find_pq(L1)
+    tree2 = [get_si(i+1, tree, vals) for i in range(n)]
     if tree[vals[0]] > 2:
         h = max(L1)
         tree2 = tree2[:len(tree2) - (h + 1)]
@@ -91,7 +91,7 @@ def skip(tree, vals):
 
 if __name__ == '__main__':
 
-    n = 14
+    n = 5
     free = []
     tree = range(n) #don't add initial tree because there is no second 1
     j = 0
@@ -102,7 +102,6 @@ if __name__ == '__main__':
         if free_check(tree, n):
             free.append(tree)
         else:
-            continue
             tree = skip(tree, vals)
     print(tree, free_check(tree, n))
 
