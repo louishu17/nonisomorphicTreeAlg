@@ -3,7 +3,7 @@ Created on 6/2/21
 
 @author: fayfayning
 """
-
+import sys
 
 """
 This method finds the primary root of an n-path tree
@@ -19,9 +19,6 @@ def center_tree(n):
         new_tree = [i for i in range(0, count+1)]
         new_tree.extend(range(1, count))
     return new_tree
-
-
-import sys
 
 """
 This method finds the p and q for the sucessor function in the research paper of given tree
