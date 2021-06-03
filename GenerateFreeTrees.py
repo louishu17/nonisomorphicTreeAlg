@@ -21,6 +21,8 @@ def center_tree(n):
     return new_tree
 
 
+import sys
+
 """
 This method finds the p and q for the sucessor function in the research paper of given tree
 """
@@ -133,7 +135,7 @@ def skip(tree):
 
 if __name__ == '__main__':
 
-    n = 11
+    n = int(sys.argv[1])
     free = []
 
     #adding initial primary rooted free tree
