@@ -133,7 +133,7 @@ def skip(tree):
 
 if __name__ == '__main__':
 
-    n = 8
+    n = 11
     free = []
 
     #adding initial primary rooted free tree
@@ -155,7 +155,7 @@ if __name__ == '__main__':
     print("fin", len(free))
 
     #Can look at all of the free nonisomorphic trees
-    # print(free)
+    #print(free)
 
 """
 print(*tree, sep = " ")
