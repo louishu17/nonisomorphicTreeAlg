@@ -35,12 +35,15 @@ def get_si(tree, vals):
     #     return get_si(i - (vals[0] - vals[1]), tree, vals)
     output = []
 
+
+    #i is index
     i = 1
     while(i <= len(tree)):
         if(i < vals[0]):
+            #array is 0 indexed so we have to subtract 1 in order to get right value
             output.append(tree[i-1])
         else:
-            output.append(output[i-(vals[0]-vals[1])-1])
+            output.append(output[i-1-(vals[0]-vals[1])])
         
         i += 1
     
@@ -69,8 +72,6 @@ def comp_lex(tree1, tree2):
     """
 
 def free_check(tree, n):
-    if tree.count(1) == 1:
-        return False
     ind_1 = tree.index(1)
     m = tree.index(1, ind_1 + 1)
     L1 = [tree[i] - 1 for i in range(1, m)]
@@ -103,24 +104,51 @@ def l_height(tree):
 
 def skip(tree):
     ind_1 = tree.index(1)
-    m = tree.index(1, ind_1 + 1)
-    L1 = [tree[i] - 1 for i in range(1, m)]
-    vals = find_pq(L1)
-    print(vals)
-    tree2 = get_si(tree, vals)
-    if tree[vals[0]] > 2:
-        h = max(L1)
-        print(tree2)
-        tree2 = tree2[:len(tree2) - (h + 1)]
-        print(tree2)
-        tree2.extend(range(1, h + 2))
+
+    m = tree.index(1, ind_1 + 1) 
+
+
+    #vals
+    #p' is the last node of the L1
+    pqArr = [0, 0]
+
+    pqArr[0] =  m - 1
+
+    #finding new q
+
+    for i in range(m - 1, -1, -1):
+        if tree[i] == tree[pqArr[0]] - 1:
+
+            #have to add one due to RESEARCH paper indexing from 1
+            pqArr[1] = i + 1
+            pqArr[0] += 1
+            break
     
+    print(tree[pqArr[0]-1])
+
+    # print(pqArr)
+    tree2 = get_si(tree, pqArr)
     print(tree2)
+    ind_1_prime = tree2.index(1)
+    try:
+        m_prime =  tree2.index(1, ind_1_prime + 1)
+    except ValueError:
+        m_prime = len(tree)
+    L1_prime = [tree2[i] - 1 for i in range(1, m_prime)]
+
+
+    #subtract one due to adding of one previously 
+    if tree[pqArr[0]-1] > 2:
+        h = max(L1_prime)
+
+        tree2 = tree2[:len(tree2) - (h + 1)]
+        tree2.extend(range(1, h + 2))
+
     return tree2
 
 if __name__ == '__main__':
 
-    n = 6
+    n = 11
     free = []
     tree = center_tree(n)
     free.append(tree)
@@ -137,7 +165,8 @@ if __name__ == '__main__':
         #     if free_check(tree, n):
         #         free.append(tree)
         while(free_check(tree, n) == False):
-            tree = skip(tree)
+               print("SKIP")
+               tree = skip(tree)
         
         free.append(tree)
 
