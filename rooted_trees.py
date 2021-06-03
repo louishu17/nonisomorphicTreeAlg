@@ -4,6 +4,10 @@ Created on 6/2/21
 @author: fayfayning
 """
 
+
+"""
+This method finds the primary root of an n-path tree
+"""
 def center_tree(n):
     tree = range(n)
     if len(tree) % 2 == 1:
@@ -17,7 +21,9 @@ def center_tree(n):
     return new_tree
 
 
-
+"""
+This method finds the p and q for the sucessor function in the research paper of given tree
+"""
 def find_pq(tree):
     for i in range(len(tree) - 1, -1, -1):
         if tree[i] != 1:
@@ -28,11 +34,11 @@ def find_pq(tree):
         if tree[i] == lp - 1:
             return [p + 1, i + 1]
 
+
+"""
+Successor Funciton
+"""
 def get_si(tree, vals):
-    # if i < vals[0]:
-    #     return tree[i-1]
-    # else:
-    #     return get_si(i - (vals[0] - vals[1]), tree, vals)
     output = []
 
 
@@ -41,81 +47,63 @@ def get_si(tree, vals):
     while(i <= len(tree)):
         if(i < vals[0]):
             #array is 0 indexed so we have to subtract 1 in order to get right value
+            #l_i
             output.append(tree[i-1])
         else:
+            #s_i-(p-q)
             output.append(output[i-1-(vals[0]-vals[1])])
-        
         i += 1
-    
     return output
 
-def comp_lex(tree1, tree2):
-    tree1 = [str(i) for i in tree1]
-    tree2 = [str(i) for i in tree2]
-    string1 = "".join(tree1)
-    string2 = "".join(tree2)
-    if (string1 == string2):
-        return 0
-    if min(string1, string2) == string1:
-        return -1
-    else:
-        return 1
-
-    """
-    for i in range(len(tree1)):
-        if i >= tree1
-        diff = tree1[i] - tree2[i]
-        if diff[i] == 0:
-            continue
-        else:
-            return diff[i]
-    """
-
+"""
+Wright, Richmond, Odlyzko and McKay check free tree algorithm
+"""
 def free_check(tree, n):
+
+    #index of first 1 in tree
     ind_1 = tree.index(1)
+
+    #index of second 1 in tree, we guarantee a second one due the fact that we start with a n-path rooted at its primary root
     m = tree.index(1, ind_1 + 1)
+
+    #L1 and L2 split based on m--the second one
     L1 = [tree[i] - 1 for i in range(1, m)]
     L2 = [tree[i] for i in range(m, n)]
     L2.insert(0, tree[0])
+
+
+    #we already guarantee condition (a) so we just have to check (b), (c), (d)
+    #condition (b) in paper
     if max(L2) < max(L1):
         return False
+    #condition (c)
     if max(L2) == max(L1):
         if len(L1) > len(L2):
             return False
+    #condition (d)
     if len(L1) == len(L2):
-        if comp_lex(L1, L2) > 0:
+        if L1 > L2:
             return False
     return True
 
-def l_height(tree):
-    ind_1 = tree.index(1)
-    m = tree.index(1, ind_1 + 1)
-    left = tree[0:m]
-    return max(left) -1
 
-    """
-    val = tree[0]        
-        for i in range(1, len(tree)):
-        if tree[i] <= val:
-            return i - 1
-        else:
-            val = tree[i]
-    """
-
+"""
+"Jump" function when condition fails
+"""
 def skip(tree):
     ind_1 = tree.index(1)
 
     m = tree.index(1, ind_1 + 1) 
 
 
-    #vals
+    #finding p and q
+
     #p' is the last node of the L1
     pqArr = [0, 0]
 
     pqArr[0] =  m - 1
 
     #finding new q
-
     for i in range(m - 1, -1, -1):
         if tree[i] == tree[pqArr[0]] - 1:
 
@@ -124,9 +112,7 @@ def skip(tree):
             pqArr[0] += 1
             break
     
-    print(tree[pqArr[0]-1])
 
-    # print(pqArr)
     tree2 = get_si(tree, pqArr)
     ind_1_prime = tree2.index(1)
     try:
@@ -136,48 +122,40 @@ def skip(tree):
     L1_prime = [tree2[i] - 1 for i in range(1, m_prime)]
 
 
-    #subtract one due to adding of one previously 
+    #subtract one due to adding of one previously to look at right index
     if tree[pqArr[0]-1] > 2:
         h = max(L1_prime)
-
         tree2 = tree2[:len(tree2) - (h + 1)]
         tree2.extend(range(1, h + 2))
 
-    print(tree2)
     return tree2
+
 
 if __name__ == '__main__':
 
-    n = 15
+    n = 8
     free = []
+
+    #adding initial primary rooted free tree
     tree = center_tree(n)
-    print(tree, free_check(tree, n))
     free.append(tree)
-    
+
+
+    #loops through until it hits base case of [0, 1, 1,..., 1]
     while sum(tree) != len(tree) - 1:
-        # print(tree, free_check(tree, n))
         vals = find_pq(tree)
         tree = get_si(tree, vals)
-        # if free_check(tree, n):
-        #     free.append(tree)
-        # else:
-        #     tree = skip(tree, vals)
-        #     if free_check(tree, n):
-        #         free.append(tree)
         while(free_check(tree, n) == False):
-               print("SKIP")
-               tree = skip(tree)
+            tree = skip(tree)
         
-        
-        print(tree, free_check(tree, n))
         
         free.append(tree)
 
-            
 
     print("fin", len(free))
 
-    print(free)
+    #Can look at all of the free nonisomorphic trees
+    # print(free)
 
 """
 print(*tree, sep = " ")
