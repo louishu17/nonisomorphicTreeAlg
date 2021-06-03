@@ -1,7 +1,7 @@
 """
 Created on 6/2/21
 
-@author: fayfayning
+@authors: louishu17, fayfayning, kieranlele
 """
 import sys
 
