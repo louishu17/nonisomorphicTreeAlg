@@ -12,8 +12,8 @@ def center_tree(n):
         new_tree.extend(range(1, count + 1))
     else:
         count = int(len(tree) / 2)
-        new_tree = [i for i in range(0, count)]
-        new_tree.extend(range(1, count + 1))
+        new_tree = [i for i in range(0, count+1)]
+        new_tree.extend(range(1, count))
     return new_tree
 
 
@@ -128,7 +128,6 @@ def skip(tree):
 
     # print(pqArr)
     tree2 = get_si(tree, pqArr)
-    print(tree2)
     ind_1_prime = tree2.index(1)
     try:
         m_prime =  tree2.index(1, ind_1_prime + 1)
@@ -144,20 +143,21 @@ def skip(tree):
         tree2 = tree2[:len(tree2) - (h + 1)]
         tree2.extend(range(1, h + 2))
 
+    print(tree2)
     return tree2
 
 if __name__ == '__main__':
 
-    n = 11
+    n = 15
     free = []
     tree = center_tree(n)
+    print(tree, free_check(tree, n))
     free.append(tree)
-
+    
     while sum(tree) != len(tree) - 1:
         # print(tree, free_check(tree, n))
         vals = find_pq(tree)
         tree = get_si(tree, vals)
-        print(tree, free_check(tree, n))
         # if free_check(tree, n):
         #     free.append(tree)
         # else:
@@ -168,10 +168,12 @@ if __name__ == '__main__':
                print("SKIP")
                tree = skip(tree)
         
+        
+        print(tree, free_check(tree, n))
+        
         free.append(tree)
 
             
-    print(tree, free_check(tree, n))
 
     print("fin", len(free))
 
