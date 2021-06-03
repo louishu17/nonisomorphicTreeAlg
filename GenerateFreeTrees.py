@@ -156,7 +156,3 @@ if __name__ == '__main__':
 
     #Can look at all of the free nonisomorphic trees
     #print(free)
-
-"""
-print(*tree, sep = " ")
-"""
